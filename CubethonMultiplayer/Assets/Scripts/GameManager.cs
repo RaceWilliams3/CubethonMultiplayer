@@ -17,8 +17,8 @@ public class GameManager : MonoBehaviourPunCallbacks
     public string playerPrefabLocation;
     public Transform[] spawnPoints;
     public PlayerController[] players;
-    public int playerWithHat;
     private int playersInGame;
+    public int alivePlayers;
 
 
     //instance
@@ -26,13 +26,22 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     void Awake()
     {
-        //instance
-        instance = this;
+        if (instance != null && instance != this)
+        {
+            gameObject.SetActive(false);
+        }
+        else
+        {
+            //set the instance
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     void Start()
     {
         players = new PlayerController[PhotonNetwork.PlayerList.Length];
+        alivePlayers = PhotonNetwork.PlayerList.Length;
         photonView.RPC("ImInGame", RpcTarget.AllBuffered);
     }
 
@@ -41,7 +50,7 @@ public class GameManager : MonoBehaviourPunCallbacks
     {
         playersInGame++;
 
-        if(playersInGame == PhotonNetwork.PlayerList.Length)
+        if (playersInGame == PhotonNetwork.PlayerList.Length)
         {
             SpawnPlayer();
         }
@@ -57,44 +66,30 @@ public class GameManager : MonoBehaviourPunCallbacks
         playerScript.photonView.RPC("Initialize", RpcTarget.All, PhotonNetwork.LocalPlayer);
     }
 
-    public PlayerController GetPlayer (int playerId)
+    public PlayerController GetPlayer(int playerId)
     {
         return players.First(x => x.id == playerId);
     }
 
-    public PlayerController GetPlayer (GameObject playerObj)
+    public PlayerController GetPlayer(GameObject playerObj)
     {
         return players.First(x => x.gameObject == playerObj);
     }
 
-    [PunRPC]
-    public void GiveHat(int playerId, bool intitialGive)
+    void Update()
     {
-        //remove hat from currently hatted player
-        if(!intitialGive)
+        if (PhotonNetwork.IsMasterClient)
         {
-            GetPlayer(playerWithHat).SetHat(false);
-        }
-
-        //give hat to new player
-        playerWithHat = playerId;
-        GetPlayer(playerId).SetHat(true);
-        hatPickupTime = Time.time;
-    }
-
-    public bool CanGetHat()
-    {
-        if(Time.time > hatPickupTime + invincibleDuration)
-        {
-            return true;
-        } else
-        {
-            return false;
+            if (alivePlayers <= 1)
+            {
+                //photonView.RPC("WinGame", RpcTarget.All, players.First(x => !x.dead).id);
+            }
         }
     }
 
+
     [PunRPC]
-    void WinGame (int playerId)
+    void WinGame(int playerId)
     {
         gameEnded = true;
         PlayerController player = GetPlayer(playerId);
@@ -104,7 +99,7 @@ public class GameManager : MonoBehaviourPunCallbacks
         Invoke("GoBackToMenu", 3.0f);
     }
 
-    void GoBackToMenu ()
+    void GoBackToMenu()
     {
         PhotonNetwork.LeaveRoom();
         NetworkManager.instance.ChangeScene("Menu");

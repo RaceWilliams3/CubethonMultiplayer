@@ -47,12 +47,12 @@ public class Menu : MonoBehaviourPunCallbacks
         NetworkManager.instance.CreateRoom(roomNameInput.text);
     }
 
-    public void OnJoinRoomButton (TMP_InputField roomNameInput)
+    public void OnJoinRoomButton(TMP_InputField roomNameInput)
     {
         NetworkManager.instance.JoinRoom(roomNameInput.text);
     }
 
-    public void OnPlayerNameUpdate (TMP_InputField playerNameInput)
+    public void OnPlayerNameUpdate(TMP_InputField playerNameInput)
     {
         PhotonNetwork.NickName = playerNameInput.text;
     }
