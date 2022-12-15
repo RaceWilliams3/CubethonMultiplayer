@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7019250382133582689}
   - component: {fileID: 7019250382133582691}
-  - component: {fileID: 6586961797828912684}
+  - component: {fileID: 1014954782206319822}
   m_Layer: 0
   m_Name: Barrier 1
   m_TagString: Obstacle
@@ -76,8 +76,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &6586961797828912684
-MeshCollider:
+--- !u!65 &1014954782206319822
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -86,10 +86,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 2
+  m_Size: {x: 0.46, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2766430531557490230
 PrefabInstance:
   m_ObjectHideFlags: 0

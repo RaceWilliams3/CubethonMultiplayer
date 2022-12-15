@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviourPunCallbacks
     {
         GetComponentInChildren<cameraController>().isSpectating = true;
         GetComponentInChildren<Transform>().localPosition = new Vector3(0, 10, 0);
-        GetComponent<Transform>().localPosition = new Vector3(0, -3, GetComponent<Transform>().localPosition.z);
+        GetComponent<Transform>().position = new Vector3(0, -3, GetComponent<Transform>().position.z);
         GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotationX |
                                                 RigidbodyConstraints.FreezeRotationY |
                                                 RigidbodyConstraints.FreezeRotationZ |
@@ -114,6 +114,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
 
     public Vector3 getPos()
     {
-        return this.GetComponent<Transform>().localPosition;
+        return this.GetComponent<Transform>().position;
     }
 }
